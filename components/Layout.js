@@ -1,7 +1,12 @@
 import Head from "next/head";
 import Sidenav from "./Sidenav";
+import {useRouter} from "next/router";
 
 const Layout = ({ children }) => {
+  
+  const router = useRouter();
+  
+
   return (
     <>
       <Head>
@@ -14,14 +19,25 @@ const Layout = ({ children }) => {
           referrerpolicy="no-referrer"
         />
       </Head>
-      <div className=" bg-gray-200 min-h-screem">
-        <div className="flex min-h-screen">
-          <Sidenav />
-          <main className="sm:w-2/3 xl:w-4/5 sm:min-h-screen p-5">
+
+      {router.pathname === '/login' || router.pathname === '/registro' ? (
+        <div className="bg-gray-800 min-h-screen flex flex-col justify-center">
+          <div>
           {children}
-          </main>
+          </div>
         </div>
-      </div>
+      ) : (
+             <div className="bg-gray-200 min-h-screem">
+             <div className="flex min-h-screen">
+               <Sidenav />
+               <main className="sm:w-2/3 xl:w-4/5 sm:min-h-screen p-5">
+               {children}
+               </main>
+             </div>
+           </div>
+      )}
+
+ 
     </>
   );
 };
