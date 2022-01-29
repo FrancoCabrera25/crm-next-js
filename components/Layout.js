@@ -1,5 +1,5 @@
 import Head from "next/head";
-import Sidebar from "./Sidebar";
+import Sidenav from "./Sidenav";
 
 const Layout = ({ children }) => {
   return (
@@ -16,7 +16,7 @@ const Layout = ({ children }) => {
       </Head>
       <div className=" bg-gray-200 min-h-screem">
         <div className="flex min-h-screen">
-          <Sidebar />
+          <Sidenav />
 
           {children}
         </div>
