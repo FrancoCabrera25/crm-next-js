@@ -1,9 +1,27 @@
+import { useState } from "react";
 import Layout from "../components/Layout";
-
+import { useRouter } from "next/router";
 import { useFormik } from "formik";
 import * as Yup from "yup";
+import { useMutation, gql } from "@apollo/client";
+
+const CREATE_USER = gql`
+  mutation CreateUser($input: UserInput) {
+    createUser(input: $input) {
+      name
+      lastname
+      email
+    }
+  }
+`;
 
 const Registro = () => {
+  const [message, setMessage] = useState(null);
+
+  const [createUser] = useMutation(CREATE_USER);
+
+  const router = useRouter();
+
   const formik = useFormik({
     initialValues: {
       name: "",
@@ -12,24 +30,54 @@ const Registro = () => {
       password: "",
     },
     validationSchema: Yup.object({
-      name: Yup.string()
-               .required("El nombre es obligatorio"),
-      lastname: Yup.string()
-                   .required("El apellido es obligatorio"),
+      name: Yup.string().required("El nombre es obligatorio"),
+      lastname: Yup.string().required("El apellido es obligatorio"),
       email: Yup.string()
-                .email("El email es invalido")
-                .required("El email es obligatorio"),
+        .email("El email es invalido")
+        .required("El email es obligatorio"),
       password: Yup.string()
-                   .required("La contraseña es obligatoria")
-                   .min(6, "La contraseña deber contener al menos 6 caracteres"),
+        .required("La contraseña es obligatoria")
+        .min(6, "La contraseña deber contener al menos 6 caracteres"),
     }),
-    onSubmit: (data) => {
-      console.log("data", data);
+    onSubmit: async (data) => {
+      // console.log(data);
+      const { name, lastname, email, password } = data;
+      try {
+        const result = await createUser({
+          variables: {
+            input: {
+              name,
+              lastname,
+              email,
+              password,
+            },
+          },
+        });
+        setMessage("Usuario creado correctamente.");
+        setTimeout(() => {
+          setMessage(null);
+          router.push("/login");
+        }, 3000);
+      } catch (e) {
+        setMessage(e.message);
+        setTimeout(() => {
+          setMessage(null);
+        }, 3000);
+      }
     },
   });
 
+  const showMessage = () => {
+    return (
+      <div className="bg-white  py-2 px-3 w-full my-3 max-w-sm text-center mx-auto">
+        <p>{message}</p>
+      </div>
+    );
+  };
+
   return (
     <Layout>
+      {message && showMessage()}
       <h1 className="text-center text-2xl text-white font-light">
         Registrarse
       </h1>
@@ -74,6 +122,7 @@ const Registro = () => {
                 className={`${"shadow appearance-none border rounded w-full py-2 px-2 text-gray-700 leading-tigh focus:outline-none focus:shadow-outline"}  ${
                   formik.errors.lastname ? "border-red-500" : ""
                 }`}
+                id="lastname"
                 type="text"
                 placeholder="Ingrese apellido"
                 value={formik.values.lastname}
@@ -94,9 +143,9 @@ const Registro = () => {
                 Email
               </label>
               <input
-                   className={`${"shadow appearance-none border rounded w-full py-2 px-2 text-gray-700 leading-tigh focus:outline-none focus:shadow-outline"}  ${
-                    formik.errors.email ? "border-red-500" : ""
-                  }`}
+                className={`${"shadow appearance-none border rounded w-full py-2 px-2 text-gray-700 leading-tigh focus:outline-none focus:shadow-outline"}  ${
+                  formik.errors.email ? "border-red-500" : ""
+                }`}
                 id="email"
                 type="email"
                 placeholder="Ingrese Email"
@@ -118,9 +167,9 @@ const Registro = () => {
                 Contraseña
               </label>
               <input
-                  className={`${"shadow appearance-none border rounded w-full py-2 px-2 text-gray-700 leading-tigh focus:outline-none focus:shadow-outline"}  ${
-                   formik.errors.password ? "border-red-500" : ""
-                 }`}
+                className={`${"shadow appearance-none border rounded w-full py-2 px-2 text-gray-700 leading-tigh focus:outline-none focus:shadow-outline"}  ${
+                  formik.errors.password ? "border-red-500" : ""
+                }`}
                 id="password"
                 type="password"
                 placeholder="Ingrese contraseña"
