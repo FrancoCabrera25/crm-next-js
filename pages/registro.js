@@ -96,7 +96,7 @@ const Registro = () => {
               </label>
               <input
                 className={`${"shadow appearance-none border rounded w-full py-2 px-2 text-gray-700 leading-tigh focus:outline-none focus:shadow-outline"}  ${
-                  formik.errors.name ? "border-red-500" : ""
+                  formik.errors.name && formik.touched.name ? "border-red-500" : ""
                 }`}
                 id="name"
                 type="text"
@@ -106,7 +106,7 @@ const Registro = () => {
                 onBlur={formik.handleBlur}
               />
             </div>
-            {formik.errors.name ? (
+            {formik.errors.name && formik.touched.name ? (
               <div className="my-2 bg-red-100 border-l-4 border-red-500 text-red-700 p-2 text-sm">
                 <p>{formik.errors.name}</p>
               </div>
@@ -120,7 +120,7 @@ const Registro = () => {
               </label>
               <input
                 className={`${"shadow appearance-none border rounded w-full py-2 px-2 text-gray-700 leading-tigh focus:outline-none focus:shadow-outline"}  ${
-                  formik.errors.lastname ? "border-red-500" : ""
+                  formik.errors.lastname && formik.touched.lastname ? "border-red-500" : ""
                 }`}
                 id="lastname"
                 type="text"
@@ -130,7 +130,7 @@ const Registro = () => {
                 onBlur={formik.handleBlur}
               />
             </div>
-            {formik.errors.lastname ? (
+            {formik.errors.lastname && formik.touched.lastname ? (
               <div className="my-2 bg-red-100 border-l-4 border-red-500 text-red-700 p-2 text-sm">
                 <p>{formik.errors.lastname}</p>
               </div>
@@ -144,7 +144,7 @@ const Registro = () => {
               </label>
               <input
                 className={`${"shadow appearance-none border rounded w-full py-2 px-2 text-gray-700 leading-tigh focus:outline-none focus:shadow-outline"}  ${
-                  formik.errors.email ? "border-red-500" : ""
+                  formik.errors.email && formik.touched.email ? "border-red-500" : ""
                 }`}
                 id="email"
                 type="email"
@@ -154,7 +154,7 @@ const Registro = () => {
                 onBlur={formik.handleBlur}
               />
             </div>
-            {formik.errors.email ? (
+            {formik.errors.email && formik.touched.email ? (
               <div className="my-2 bg-red-100 border-l-4 border-red-500 text-red-700 p-2 text-sm">
                 <p>{formik.errors.email}</p>
               </div>
@@ -168,7 +168,7 @@ const Registro = () => {
               </label>
               <input
                 className={`${"shadow appearance-none border rounded w-full py-2 px-2 text-gray-700 leading-tigh focus:outline-none focus:shadow-outline"}  ${
-                  formik.errors.password ? "border-red-500" : ""
+                  formik.errors.password && formik.touched.password ? "border-red-500" : ""
                 }`}
                 id="password"
                 type="password"
@@ -178,7 +178,7 @@ const Registro = () => {
                 onBlur={formik.handleBlur}
               />
             </div>
-            {formik.errors.password ? (
+            {formik.errors.password && formik.touched.password ? (
               <div className="my-2 bg-red-100 border-l-4 border-red-500 text-red-700 p-2 text-sm">
                 <p>{formik.errors.password}</p>
               </div>
