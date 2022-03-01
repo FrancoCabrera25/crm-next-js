@@ -1,5 +1,6 @@
 import Layout from "../components/Layout";
 import { gql, useQuery } from "@apollo/client";
+import { useRouter } from "next/router";
 
 const GET_CLIENT = gql`
   query ExampleQuery {
@@ -17,12 +18,15 @@ const GET_CLIENT = gql`
 `;
 
 const Home = () => {
+  const router = useRouter();
   const { data, loading, error } = useQuery(GET_CLIENT);
-  // console.log(data);
-  // console.log(loading);
-  // console.log(error);
 
   if (loading) return "Cargando";
+
+  if (!data) {
+    router.push("/login");
+  }
+
   return (
     <div>
       <Layout>
@@ -37,7 +41,7 @@ const Home = () => {
             </tr>
           </thead>
           <tbody className="bg-white">
-            {data.getClients.map((client) => (
+            {data?.getClients.map((client) => (
               <tr key={client.id}>
                 <td className="border px-4 py-2">
                   {" "}
