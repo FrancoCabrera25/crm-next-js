@@ -1,5 +1,6 @@
 import { gql, useQuery } from "@apollo/client";
 import { useRouter } from "next/router";
+import { useApolloClient } from "@apollo/client";
 
 const GET_USER = gql`
   query GetUser {
@@ -13,17 +14,19 @@ const GET_USER = gql`
 `;
 
 const Header = () => {
+  const client = useApolloClient();
   const router = useRouter();
   const { data, loading, error } = useQuery(GET_USER);
 
   const logout = () => {
+    client.clearStore();
     localStorage.removeItem("token");
     router.push("/login");
   };
 
   if (loading) return null;
   if (!data) {
-    router.push("/login");
+    logout();
   }
 
   return (

@@ -1,10 +1,11 @@
 import Layout from "../components/Layout";
 import { gql, useQuery } from "@apollo/client";
 import { useRouter } from "next/router";
+import Link from "next/link";
 
 const GET_CLIENT = gql`
   query ExampleQuery {
-    getClients {
+    getClientsBySeller {
       id
       name
       lastname
@@ -19,18 +20,40 @@ const GET_CLIENT = gql`
 
 const Home = () => {
   const router = useRouter();
-  const { data, loading, error } = useQuery(GET_CLIENT);
+  const { data, loading, error, refetch } = useQuery(GET_CLIENT);
 
-  if (loading) return "Cargando";
+  if (loading && !data) return "Cargando";
 
-  if (!data) {
+  if (!data && !error) {
     router.push("/login");
+  }
+
+  if (error) {
+    return (
+      <Layout>
+      <div>
+        oh! ocurrio un error
+        <button
+          type="button"
+          className="bg-blue-800 w-full sm:w-auto font-bold uppercase text-xs rounded py-2 px-2 text-white shadow-md"
+          onClick={() => refetch()}
+        >
+         Reintentar
+        </button>
+      </div>
+      </Layout>
+    );
   }
 
   return (
     <div>
       <Layout>
         <h1 className="text-2xl text-gray-800 font-ligth">Clientes</h1>
+        <Link href="/newclient">
+          <a className="bg-blue-800 py-2 px-5 mt-5 inline-block text-white rounded  text-sm hover:bg-gray-600 mb-3 uppercase font-bold">
+            Nuevo cliente
+          </a>
+        </Link>
 
         <table className="table-auto shadow-md mt-10 w-full w-lg">
           <thead className="bg-gray-800">
@@ -41,7 +64,7 @@ const Home = () => {
             </tr>
           </thead>
           <tbody className="bg-white">
-            {data?.getClients.map((client) => (
+            {data?.getClientsBySeller.map((client) => (
               <tr key={client.id}>
                 <td className="border px-4 py-2">
                   {" "}

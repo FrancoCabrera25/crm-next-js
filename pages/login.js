@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import Layout from "../components/Layout";
 import { useFormik } from "formik";
@@ -15,7 +14,6 @@ const AUTH_USER = gql`
 `;
 
 const Login = () => {
-
   const [message, setMessage] = useState(null);
   const [authUser] = useMutation(AUTH_USER);
   const router = useRouter();
@@ -34,16 +32,18 @@ const Login = () => {
     onSubmit: async (formData) => {
       const { email, password } = formData;
       try {
-        const { data } =  await authUser( { variables: {
+        const { data } = await authUser({
+          variables: {
             input: {
-                email,
-                password
-            }
-        }})
+              email,
+              password,
+            },
+          },
+        });
         setMessage(null);
-         const { token } = data.authUser;
-         localStorage.setItem('token', token);
-         router.push('/');
+        const { token } = data.authUser;
+        localStorage.setItem("token", token);
+        router.push("/");
       } catch (e) {
         setMessage(e.message);
       }
@@ -70,17 +70,17 @@ const Login = () => {
           >
             <div className="mb-4">
               <label
-                className={`${"block text-gray-700 text-sm font-bold mb-2"} ${
-                  formik.errors.email && formik.touched.email
-                    ? "border-red-500"
-                    : ""
-                } `}
+                className="block text-gray-700 text-sm font-bold mb-2"
                 htmlFor="email"
               >
                 Email
               </label>
               <input
-                className="shadow appearance-none border rounded w-full py-2 px-2 text-gray-700 leading-tigh focus:outline-none focus:shadow-outline"
+                className={`${"shadow appearance-none border rounded w-full py-2 px-2 text-gray-700 leading-tigh focus:outline-none focus:shadow-outline"}  ${
+                  formik.errors.email && formik.touched.email
+                    ? "border-red-500"
+                    : ""
+                }`}
                 id="email"
                 type="email"
                 placeholder="Ingrese Email"
@@ -96,17 +96,17 @@ const Login = () => {
             ) : null}
             <div className="mb-4">
               <label
-                className={`${"block text-gray-700 text-sm font-bold mb-2"} ${
-                  formik.errors.password && formik.touched.password
-                    ? "border-red-500"
-                    : ""
-                } `}
+                className="block text-gray-700 text-sm font-bold mb-2"
                 htmlFor="password"
               >
                 Contraseña
               </label>
               <input
-                className="shadow appearance-none border rounded w-full py-2 px-2 text-gray-700 leading-tigh focus:outline-none focus:shadow-outline"
+                className={`${"shadow appearance-none border rounded w-full py-2 px-2 text-gray-700 leading-tigh focus:outline-none focus:shadow-outline"}  ${
+                  formik.errors.password && formik.touched.password
+                    ? "border-red-500"
+                    : ""
+                }`}
                 id="password"
                 type="password"
                 placeholder="Ingrese contraseña"
