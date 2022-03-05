@@ -2,6 +2,7 @@ import Layout from "../components/Layout";
 import { gql, useQuery } from "@apollo/client";
 import { useRouter } from "next/router";
 import Link from "next/link";
+import Client from "../components/Client";
 
 const GET_CLIENT = gql`
   query ExampleQuery {
@@ -31,16 +32,16 @@ const Home = () => {
   if (error) {
     return (
       <Layout>
-      <div>
-        oh! ocurrio un error
-        <button
-          type="button"
-          className="bg-blue-800 w-full sm:w-auto font-bold uppercase text-xs rounded py-2 px-2 text-white shadow-md"
-          onClick={() => refetch()}
-        >
-         Reintentar
-        </button>
-      </div>
+        <div>
+          oh! ocurrio un error
+          <button
+            type="button"
+            className="bg-blue-800 w-full sm:w-auto font-bold uppercase text-xs rounded py-2 px-2 text-white shadow-md"
+            onClick={() => refetch()}
+          >
+            Reintentar
+          </button>
+        </div>
       </Layout>
     );
   }
@@ -61,23 +62,17 @@ const Home = () => {
               <th className="w-1/5 py-2">Nombre</th>
               <th className="w-1/5 py-2">Empresa</th>
               <th className="w-1/5 py-2">Email</th>
+              <th className="w-1/5 py-2">Acciones</th>
             </tr>
           </thead>
           <tbody className="bg-white">
             {data?.getClientsBySeller.map((client) => (
-              <tr key={client.id}>
-                <td className="border px-4 py-2">
-                  {" "}
-                  {client.name} {client.lastname}
-                </td>
-                <td className="border px-4 py-2"> {client.company}</td>
-                <td className="border px-4 py-2"> {client.email}</td>
-              </tr>
+              <Client key={client.id} client={client} />
             ))}
           </tbody>
         </table>
       </Layout>
-    </div>
+    </div>  
   );
 };
 
